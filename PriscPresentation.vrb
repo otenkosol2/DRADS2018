@@ -1,0 +1,56 @@
+\frametitle{Proof: Security - back-translation example}
+\textbf{Intuition}:\\
+\begin{itemize}
+\item Construct minimal contract for context functions\\
+\item Insert assertions where necessary\\
+\end{itemize}
+
+\textbf{Example}:\\
+\begin{columns}
+\begin{column}{0.4\textwidth}
+
+\begin{figure}[h]
+  \centering
+\begin{lstlisting}[style=CStyleNoNum, captionpos = t,title = Target]
+int f(int* a, int b){
+	(...)
+	b = 5;
+	return b;
+}
+\end{lstlisting}
+\end{figure}
+
+\end{column}
+
+\begin{column}{0.08\textwidth}
+
+	{\large$\backtranslation{\cdot}$}\\\vspace{-1em}
+	\begin{figure}
+	\includegraphics[width=0.8\linewidth]{BlueArrow}
+	\end{figure}
+
+\end{column}
+
+\begin{column}{0.56\textwidth}
+
+\begin{figure}[h]
+  \centering
+\begin{lstlisting}[style=CStyleNoNum, captionpos = t,title = Source]
+int f(int* a, int b)
+//@pre (a${\color{mGreen}{_{chunk}}}$: a |-> [_]${\color{mGreen}{_L) \lor a = null}}$;
+//@post true;
+{
+	(...)
+	//{}
+	b = 5;
+	//{b = 5}
+	return b;
+	//{result = 5 * b = 5}
+	//{}
+}
+\end{lstlisting}
+\end{figure}
+
+\end{column}
+\end{columns}
+
