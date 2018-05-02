@@ -510,10 +510,10 @@ int p(int x, int *data)
 %------------------------------------------------
 \begin{frame}
 \frametitle{Separation logic derivation}
-= tree-shaped proof of function contract\\
+= proof of function contract\\
 %= tree of Hoare triples related by separation logic axioms (e.g. \textsc{If}, \textsc{F-App}, $\ldots$)\\%Q? maybe show one step
 \vspace{.5em}
-\textbf{Root} = the Hoare triple: $\{pre\}\ BODY\ \{post\}$\\
+%\textbf{Root} = the Hoare triple: $\{pre\}\ BODY\ \{post\}$\\
 \vspace{.5em}
 Used as input $\Rightarrow$ \emph{separation-logic-proof-directed compilation}
 %In-line representation as \emph{symbolic execution}
@@ -678,9 +678,9 @@ c1: int* (linear)
 %Translation: template
 \begin{frame}[fragile]
 \frametitle{Translation: Split/Join}
-Performed by target language built-in functions \emph{split} and \emph{join}.\\
-Split creates 2 linear array capabilities out of one. Join does the opposite.
-
+Target language built-in functions \emph{split} and \emph{join}.\\
+Source language split/join\\
+$\Rightarrow$ Target language split/join on corresponding capabilities
 \vspace{-1em}
 
 \begin{columns}
@@ -760,8 +760,8 @@ c1[0] = newVal;
 \frametitle{Translation: Function call}
 \begin{columns}
 \begin{column}{0.55\textwidth}
-Add arguments/return values to calls.\\
-Corresponding to heap chunks.
+Add arguments/return values to calls\\
+\quad Corresponding to heap chunks
 \end{column}
 \begin{column}{0.42\textwidth}
 \begin{lstlisting}[style=CStyle, captionpos = t]
@@ -808,6 +808,7 @@ int newVal = p(n[0], data);
 
 \end{frame}
 %------------------------------------------------
+\iffalse
 %Translation: template
 \begin{frame}[fragile]
 \frametitle{Translation: In-/Outcall}
@@ -856,6 +857,7 @@ int p(int x,int *data)
 \end{column}
 \end{columns}
 \end{frame}
+\fi
 %------------------------------------------------
 \begin{frame}
 \frametitle{Proof: Outline}
@@ -869,7 +871,7 @@ int p(int x,int *data)
 \only<1>{
 \begin{itemize}[leftmargin=3cm]
 \item   $\vdash s$: specific proof of $s$
-\item $\compile{}{}$: compiles to
+\item $\compile{}{}$: compiles to (also $[[\cdot]]$)
 \item $x\simeq_{ctx}x'\equiv \forall C: C[x]\Downarrow\ \Leftrightarrow C[x']\Downarrow$\\
 Requires operational semantics!
 \end{itemize}}
@@ -997,7 +999,7 @@ t\simeq_{ctx}t'}
 &\Uparrow coherence &&&&\Downarrow coherence\\
 \vdash \backtranslation{C}[s&]\Downarrow\ && & \vdash \backtranslation{C}[s'&]\Downarrow \\
 &\Uparrow {\color{mGreen}{*}} &&&&\Downarrow {\color{mGreen}{*}}\\
-\forall C\ldotp\quad C [t&]\Downarrow\ &&{\color{red}{\Rightarrow^?}} & \vdash C[t'&]\Downarrow \\
+\forall C\ldotp\quad C [t&]\Downarrow\ &&{\color{red}{\Rightarrow^?}} &  C[t'&]\Downarrow \\
 &&&\Updownarrow& \text{definition } \simeq_{ctx}&\\
 &&{\color{red}{t}}\ &{\color{red}{\simeq^?_{ctx}t'}}&&\\
 \end{alignat*}
